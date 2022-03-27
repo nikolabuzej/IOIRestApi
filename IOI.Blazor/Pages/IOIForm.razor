@@ -1,0 +1,65 @@
+﻿@page "/dodaj/{Id:int}";
+@inject IOIService _service;
+@inject NavigationManager _manager;
+@using FrontEnd.Domain
+@using IOI.Blazor.Services
+<h3>IOIForm</h3>
+
+<EditForm Model=@IOI class="container align-content-center" OnValidSubmit=@KreirajIOI>
+    <ValidationSummary></ValidationSummary>
+    <div class="row">
+        <label class="col">Rok isporuke</label>
+        <InputDate class="col form-control" @bind-Value=IOI.DeliveryDeadline></InputDate>
+    </div>
+
+    <div class="row">
+        <label class="col">Rok isplate</label>
+        <InputDate class="col form-control" @bind-Value=IOI.PaymentDeadline></InputDate>
+    </div>
+    <div class="row">
+        <label class="col">Garancija</label>
+        <InputSelect class="col form-control" @bind-Value=IOI.WarrantyId>
+            @foreach (var garancija in Garancije)
+            {
+                <option value="@garancija.WarrantyId">@garancija.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <button type="submit" class="btn btn-primary">Sacuvaj</button>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+    private IOI IOI { get; set; } = new();
+    private IEnumerable<Warranty> Garancije { get; set; } = Enumerable.Empty<Warranty>();
+    protected override async Task OnInitializedAsync()
+    {
+        Garancije = await _service.VratiGarancije();
+        if (Id != null)
+        {
+            IOI = await _service.VratiInformaciju(Id.Value);
+        }
+        else
+        {
+
+            IOI.WarrantyId = Garancije.FirstOrDefault().WarrantyId;
+        }
+
+    }
+
+    private async Task KreirajIOI()
+    {
+        if(Id == null)
+        {
+            _ = await _service.KreirajIOI(IOI);
+        }
+        else
+        {
+            _ = await _service.Azuriraj(IOI);
+        }
+
+        _manager.NavigateTo("");
+    }
+}

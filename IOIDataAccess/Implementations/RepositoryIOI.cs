@@ -1,10 +1,10 @@
 ﻿using IOIDataAccess.IReporsitories;
 using IOIModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace IOIDataAccess.Implementations
 {
@@ -33,7 +33,7 @@ namespace IOIDataAccess.Implementations
 
         public List<IOI> GetAll()
         {
-            return context.IOI.ToList();
+            return context.IOI.Include(i => i.Warranty).ToList();
         }
 
         public List<IOI> Search(Expression<Func<IOI, bool>> pred)

@@ -1,0 +1,57 @@
+﻿@using FrontEnd.Domain;
+@using IOI.Blazor.Services
+@inject IOIService _service;
+@inject NavigationManager _manager;
+@page "/";
+
+<h3>IOIList</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th colspan="3" >Infromacije o Isporuci</th>
+        <th colspan="4" >Garancija</th>
+    </tr>
+       <tr>
+           <th>Id</th>
+           <th>Rok isporuke</th>
+           <th>Rok isplate</th>
+           <th>Garancija</th>
+           <th>Godine garancije</th>
+           <th></th>
+           <th></th>
+       </tr>
+    </thead>
+    <tbody>
+        @foreach(var ioi in Informacije)
+        {
+            <tr>
+                <td>@ioi.IOIid</td>
+                <td>@ioi.DeliveryDeadline</td>
+                <td>@ioi.PaymentDeadline</td>
+                <td>@ioi.Warranty.Name</td>
+                <td class="d-flex justify-content-center">@ioi.Warranty.YearsValid</td>
+                <td><i class="oi oi-external-link" @onclick=@(() => Izmeni(ioi.IOIid))></i></td>
+                <td><i class="oi oi-trash" @onclick=@(() => ObrisiIOI(ioi.IOIid))></i></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private IEnumerable<IOI> Informacije { get; set; } = Enumerable.Empty<IOI>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Informacije = await _service.VratiInformacije();
+    }
+    private void Izmeni(int? id)
+    {
+        _manager.NavigateTo($"dodaj/{id}");
+    }
+    private async Task ObrisiIOI(int? id)
+    {
+        await _service.Obrisi(id.Value);
+        Informacije = await _service.VratiInformacije();
+    }
+}

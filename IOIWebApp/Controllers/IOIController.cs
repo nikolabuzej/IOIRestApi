@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,16 +26,16 @@ namespace IOIWebApp.Controllers
 
             return work.IOI.GetAll();
         }
-        [HttpGet("warrantyId")]
-        public IEnumerable<int> GetWarrantyIds()
+        [HttpGet("warranty")]
+        public IEnumerable<Warranty> GetWarrantyIds()
         {
-            return work.Warranty.getAllId();
+            return work.Warranty.GetAll();
         }
         // GET api/<IOIController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            IOI ioi= work.IOI.FindById(id);
+            IOI ioi = work.IOI.FindById(id);
             if (ioi != null)
             {
                 return Ok(ioi);
@@ -50,25 +48,27 @@ namespace IOIWebApp.Controllers
 
         // POST api/<IOIController>
         [HttpPost]
-        public void Post([FromBody] IOI value)
+        public IOI Post([FromBody] IOI value)
         {
             try
             {
+                value.Warranty = work.Warranty.FindById(value.WarrantyId);
                 work.IOI.Add(value);
                 work.Commit();
-               Response.StatusCode=StatusCodes.Status201Created;
-                
+                Response.StatusCode = StatusCodes.Status201Created;
+
             }
             catch (Exception)
             {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
-                
+
             }
+            return value;
         }
 
         // PUT api/<IOIController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] IOI value)
+        public ActionResult<IOI> Put(int id, [FromBody] IOI value)
         {
             IOI ioi = work.IOI.FindById(id);
             if (ioi != null)
@@ -76,9 +76,10 @@ namespace IOIWebApp.Controllers
                 ioi.DeliveryDeadline = value.DeliveryDeadline;
                 ioi.PaymentDeadline = value.PaymentDeadline;
                 ioi.WarrantyId = value.WarrantyId;
-                
+
                 work.Commit();
-                return Ok();
+
+                return Ok(ioi);
             }
             else
             {
@@ -109,8 +110,8 @@ namespace IOIWebApp.Controllers
             {
                 return BadRequest(e.Message);
             }
-        
-            
+
+
         }
     }
 }

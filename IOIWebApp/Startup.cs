@@ -2,16 +2,9 @@ using IOIDataAccess.UnitOfWork;
 using IOIModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IOIWebApp
 {
@@ -27,6 +20,15 @@ namespace IOIWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(p =>
+                {
+                    p.AllowAnyHeader();
+                    p.AllowAnyMethod();
+                    p.AllowAnyOrigin();
+                });
+            });
             services.AddControllers();
             services.AddDbContext<IOIContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -34,7 +36,7 @@ namespace IOIWebApp
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                
+
             });
         }
 
@@ -46,9 +48,11 @@ namespace IOIWebApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
 
             app.UseAuthorization();
 
