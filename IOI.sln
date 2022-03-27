@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOIModel", "IOIModel\IOIModel.csproj", "{E5D4ACD6-B883-45B8-AA7C-F7A5860FA3DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOIModel", "IOIModel\IOIModel.csproj", "{E5D4ACD6-B883-45B8-AA7C-F7A5860FA3DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOIDataAccess", "IOIDataAccess\IOIDataAccess.csproj", "{B924F620-01CD-48C5-B167-9A2514750ECE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOIDataAccess", "IOIDataAccess\IOIDataAccess.csproj", "{B924F620-01CD-48C5-B167-9A2514750ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOIWebApp", "IOIWebApp\IOIWebApp.csproj", "{298E17E4-F7C5-4664-854B-E9898F4142DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOIWebApp", "IOIWebApp\IOIWebApp.csproj", "{298E17E4-F7C5-4664-854B-E9898F4142DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
